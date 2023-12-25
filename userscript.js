@@ -1,0 +1,61 @@
+//fetch('./data.json')
+function start_bad_apple(){
+    fetch('http://127.0.0.1:5500/data.json')
+    .then((response) => response.json())
+    .then((json) => {
+        let frame = json.frame;
+        let dStyle = document.querySelector('head');
+        dStyle.innerHTML += '<style> .mono {font-family: monospace;} </style>';
+
+
+        let rows = document.getElementsByTagName("tr");
+        setTimeout(() => {
+                for (let i=0; i<rows.length; ++i) {
+                if(i === 1 || i == 3 || i === 5) continue;
+                let item = rows[i].getElementsByTagName("td")[1];
+                item.removeChild(item.firstElementChild);
+                
+                for (let j=0; j<33; ++j) {
+                    let a = document.createElement("span");
+                    a.appendChild(document.createTextNode("AC"));
+                    a.setAttribute("title", "Accepted");
+                    a.setAttribute("class", "case-AC mono");
+                    item.appendChild(a);
+                }
+            }
+        }, 15000);
+
+        async function print(fr){
+            let frames = frame[fr];
+            for (let k=0, i = 0; k<rows.length; k++) {
+                if(k === 1 || k == 3 || k === 5) continue;
+                let item = rows[k].getElementsByTagName("td")[1];
+                let pixels = item.getElementsByTagName("span");
+                for (let j=0; j<frames[i].length; j++) {      
+                    if (frames[i][j] === 1) {
+                        pixels[j].textContent = "AC";
+                        pixels[j].setAttribute("title", "Accepted");
+                        pixels[j].setAttribute("class", "case-AC mono");  
+                    }
+                    else {
+                        pixels[j].textContent = "WA";
+                        pixels[j].setAttribute("title", "Wrong Answer");
+                        pixels[j].setAttribute("class", "case-WA mono");  
+                    }
+                }
+                ++i;
+            }
+        }
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+        async function run(fr) {
+            await sleep(fr * 100 + 30000);
+            print(fr);
+        }
+        for(let fr = 0; fr < frame.length;){
+            run(fr);
+            ++fr;
+        }
+    });
+}
