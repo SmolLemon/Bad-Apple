@@ -1,5 +1,5 @@
 function start_bad_apple(){
-    fetch('http://127.0.0.1:5500/data.json') 
+    fetch('https://raw.githubusercontent.com/SmolLemon/Bad-Apple/main/data.json') 
     .then((response) => response.json())
     .then((json) => {
         let frame = json.frame;
@@ -53,7 +53,7 @@ function start_bad_apple(){
             //The bad apple video runs in 30 frames per second.
             //I tried to run 30 frames but it was too laggy to put on video
             //So I slowed it down to 10 frames per second
-            await sleep(fr * 100 + 30000);
+            await sleep(fr * 100 + 10000);
             print(fr);
         }
         for(let fr = 0; fr < frame.length;){
