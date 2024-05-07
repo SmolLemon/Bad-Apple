@@ -9,12 +9,12 @@ function start_bad_apple(){
 
         let rows = document.getElementsByTagName("tr");
         setTimeout(() => {
-                for (let i=0; i<rows.length; ++i) {
-                if(i === 1 || i == 3 || i === 5) continue;
+                for (let i = 0; i < rows.length; ++i) {
                 let item = rows[i].getElementsByTagName("td")[1];
+                if(item.id.slice(-1) === "t") continue;
                 item.removeChild(item.firstElementChild); //remove the "Accepted" text
                 
-                for (let j=0; j<33; ++j) {
+                for (let j = 0; j < 33; ++j) {
                     let a = document.createElement("span");
                     a.appendChild(document.createTextNode("AC"));
                     a.setAttribute("title", "Accepted");
@@ -22,16 +22,16 @@ function start_bad_apple(){
                     item.appendChild(a);
                 }
             }
-        }, 15000);
+        }, 5000);
 
         
-        async function print(fr){
+        async function makeApple(fr){
             let frames = frame[fr];
-            for (let k=0, i = 0; k<rows.length; k++) {
-                if(k === 1 || k == 3 || k === 5) continue;
+            for (let k = 0, i = 0; k < rows.length; ++k) {
                 let item = rows[k].getElementsByTagName("td")[1];
+                if(item.id.slice(-1) === "t") continue;
                 let pixels = item.getElementsByTagName("span");
-                for (let j=0; j<frames[i].length; j++) {
+                for (let j = 0; j < frames[i].length; ++j) {
                     // AC for white pixels, WA for black pixels
                     if (frames[i][j] === 1) {
                         pixels[j].textContent = "AC";
@@ -54,11 +54,12 @@ function start_bad_apple(){
             //I tried to run 30 frames but it was too laggy to put on video
             //So I slowed it down to 10 frames per second
             await sleep(fr * 100 + 10000);
-            print(fr);
+            makeApple(fr);
+            if(fr === 0) console.log("Start Bad Apple on VNOJ by SmolLemon");
+            if((fr + 1) % 100 === 0) console.log(fr + 1);
         }
-        for(let fr = 0; fr < frame.length;){
+        for(let fr = 0; fr < frame.length; ++fr){
             run(fr);
-            ++fr;
         }
     });
 }
